@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Chessboard
 {
@@ -20,8 +21,8 @@ namespace Chessboard
         public ChessBoardController()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 632; // 512 + 128...(64*2)
-            graphics.PreferredBackBufferHeight = 632; // 512 + 128...(64*2)
+            graphics.PreferredBackBufferWidth = 320; // 512 + 128...(64*2)
+            graphics.PreferredBackBufferHeight = 240; // 512 + 128...(64*2)
             Content.RootDirectory = "Content";
 
             camera = new Camera();
@@ -53,7 +54,7 @@ namespace Chessboard
             whiteBoxTexture = Content.Load<Texture2D>("whiteBox.png");
             blackBoxTexture = Content.Load<Texture2D>("blackBox.png");
             peasantTexture = Content.Load<Texture2D>("peasant.png");
-
+            camera.setScale(graphics);
         }
 
         /// <summary>
@@ -76,7 +77,6 @@ namespace Chessboard
                 Exit();
 
             // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -87,14 +87,13 @@ namespace Chessboard
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //Vector2 windowCenterPos = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            //Vector2 whiteBoxStartPos = new Vector2(0, 0);
+            
+            // Used to easier change the position of the pawn.
+            int peasantX = 2;
+            int peasantY = 3;
 
             // TODO: Add your drawing code here
-
             spriteBatch.Begin();
-            
             int counter = 0;
             for (int x = 0; x < 8; x++)
             {
@@ -102,11 +101,13 @@ namespace Chessboard
                 {
                     if(counter % 2 == 0)
                     {
-                        spriteBatch.Draw(whiteBoxTexture, camera.getVisualCoordinates(x, y), Color.White);
+                        spriteBatch.Draw(whiteBoxTexture, camera.getVisualCoordinates(x, y), null, Color.White,
+                                        0, new Vector2(0, 0), camera.scale, SpriteEffects.None, 0);
                     }
                     else
                     {
-                        spriteBatch.Draw(blackBoxTexture, camera.getVisualCoordinates(x, y), Color.White);
+                        spriteBatch.Draw(blackBoxTexture, camera.getVisualCoordinates(x, y), null, Color.White,
+                                        0, new Vector2(0, 0), camera.scale, SpriteEffects.None, 0);
                     }
                     counter++;
                 }
@@ -115,23 +116,14 @@ namespace Chessboard
 
             /* Draw a symbol so that I will be able to see the logical coordinates.
              * Swap between these two...*/
-            spriteBatch.Draw(peasantTexture, camera.getRotatedBoard(1, 1), Color.White);
-            //spriteBatch.Draw(peasantTexture, camera.getVisualCoordinates(1, 1), Color.White);
-            
+
+            //spriteBatch.Draw(peasantTexture, camera.getVisualCoordinates(peasantX, peasantY), null, Color.White,
+            //                            0, new Vector2(0, 0), camera.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(peasantTexture, camera.getRotatedBoard(peasantX, peasantY), null, Color.White,
+                                        0, new Vector2(0, 0), camera.scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
-
-        // MOVED TO CAMERA CLASS
-        //public Vector2 getCoordinates(int xCoordinate, int yCoordinate)
-        //{
-        //    int tileSize = 64;
-        //    int borderSize = 64;
-        //    int visualX = borderSize + xCoordinate * tileSize;
-        //    int visualY = borderSize + yCoordinate * tileSize; 
-            
-        //    return new Vector2(visualX, visualY);
-        //}
     }
 }
