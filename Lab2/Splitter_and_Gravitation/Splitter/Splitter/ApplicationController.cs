@@ -1,29 +1,27 @@
-﻿using BallApplication.Model;
-using BallApplication.View;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
-namespace BallApplication
+namespace Splitter
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class BallAppController : Game
+    public class ApplicationController : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D ballTexture;
-        BallSimulation ballSimulation;
-        BallView ballView;
+        Camera camera;
+        Texture2D spark;
+        SplitterSystem splitterSystem;
 
-        public BallAppController()
+        public ApplicationController()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 600;
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 640;
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.IsFullScreen = false;
         }
 
         /// <summary>
@@ -36,7 +34,6 @@ namespace BallApplication
         {
             // TODO: Add your initialization logic here
 
-            ballSimulation = new BallSimulation();
             base.Initialize();
         }
 
@@ -50,9 +47,10 @@ namespace BallApplication
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            ballTexture = Content.Load<Texture2D>("EightBall.png");
-            Camera camera = new Camera(GraphicsDevice.Viewport);
-            ballView = new BallView(ballSimulation, camera, GraphicsDevice, ballTexture);
+            spark = Content.Load<Texture2D>("spark.png");
+            camera = new Camera(GraphicsDevice.Viewport);
+            splitterSystem = new SplitterSystem();
+            
         }
 
         /// <summary>
@@ -72,10 +70,20 @@ namespace BallApplication
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
-            // TODO: Add your update logic here
-            ballSimulation.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                splitterSystem = new SplitterSystem();
+            }
+
+            foreach (SplitterParticle particle in splitterSystem.particleArray)
+            {
+                particle.update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            
 
             base.Update(gameTime);
         }
@@ -86,10 +94,17 @@ namespace BallApplication
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            
             // TODO: Add your drawing code here
-            ballView.Draw(spriteBatch);
+            spriteBatch.Begin();
+            foreach (SplitterParticle particle in splitterSystem.particleArray)
+            {
+                float scale = camera.getTextureScale(spark.Width);
+                spriteBatch.Draw(spark, camera.getVisualCoords(particle.position, spark), null, Color.White, 0, particle.randomDirection, scale, SpriteEffects.None, 0);
+            }
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

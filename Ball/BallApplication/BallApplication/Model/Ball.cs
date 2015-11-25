@@ -12,8 +12,10 @@ namespace BallApplication.Model
         Vector2 position;
         Vector2 speed;
         Random random = new Random();
+        float rotation = 0;
 
         private static float radius = 0.05f;
+        // Used before I used random as startspeed.
         //float acceleration = 0.25f;
 
         public Ball()
@@ -46,6 +48,11 @@ namespace BallApplication.Model
         public void setSpeedY()
         {
             speed.Y = -speed.Y;
+        }
+
+        public float getRotation()
+        {
+            return rotation += 0.075f;
         }
 
     }

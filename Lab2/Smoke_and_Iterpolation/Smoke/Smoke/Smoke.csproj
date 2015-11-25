@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{59AB31A9-874B-4303-A647-13B47E2D40D5}</ProjectGuid>
+    <ProjectGuid>{5969524D-B790-4CE3-AD09-9F89ECC0CFE3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BallApplication</RootNamespace>
-    <AssemblyName>BallApplication</AssemblyName>
+    <RootNamespace>Smoke</RootNamespace>
+    <AssemblyName>Smoke</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <MonoGameContentBuilderExe>
@@ -38,13 +38,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BallAppController.cs" />
-    <Compile Include="Model\Ball.cs" />
-    <Compile Include="Model\BallSimulation.cs" />
+    <Compile Include="ApplicationController.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\BallView.cs" />
-    <Compile Include="View\Camera.cs" />
+    <Compile Include="SmokeParticle.cs" />
+    <Compile Include="SmokeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -54,10 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\EightBall.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\GreenBall.png">
+    <Content Include="Content\particlesmoke.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />

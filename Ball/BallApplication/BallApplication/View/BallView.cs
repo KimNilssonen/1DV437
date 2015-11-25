@@ -34,11 +34,11 @@ namespace BallApplication.View
             spriteBatch.Begin();
 
             // Draw board.
-            spriteBatch.Draw(gameAreaTexture, camera.getGameArea(), Color.White);
+            spriteBatch.Draw(gameAreaTexture, camera.getGameArea(), Color.DarkGreen);
 
-            // Draw ball.
+            // Draw ball. Added rotation for fun =)
             spriteBatch.Draw(ballTexture, camera.getVisualCoords(ballSimulation.getBallPosition()), 
-                        ballTexture.Bounds, Color.White, 0, new Vector2(ballTexture.Bounds.Width/2, ballTexture.Bounds.Height/2),
+                        ballTexture.Bounds, Color.White, ballSimulation.getRotation(), new Vector2(ballTexture.Bounds.Width/2, ballTexture.Bounds.Height/2),
                         ballScale, SpriteEffects.None, 0);
 
             spriteBatch.End();

@@ -1,29 +1,26 @@
-﻿using BallApplication.Model;
-using BallApplication.View;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BallApplication
+namespace Smoke
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class BallAppController : Game
+    public class ApplicationController : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D ballTexture;
-        BallSimulation ballSimulation;
-        BallView ballView;
+        Texture2D smoke;
+        Camera camera;
+        SmokeSystem smokeSystem;
 
-        public BallAppController()
+        public ApplicationController()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 600;
+            graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 640;
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.IsFullScreen = false;
         }
 
         /// <summary>
@@ -36,7 +33,6 @@ namespace BallApplication
         {
             // TODO: Add your initialization logic here
 
-            ballSimulation = new BallSimulation();
             base.Initialize();
         }
 
@@ -48,11 +44,11 @@ namespace BallApplication
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            camera = new Camera(GraphicsDevice.Viewport);
+            smoke = Content.Load<Texture2D>("particlesmoke.png");
+            smokeSystem = new SmokeSystem(smoke);
 
             // TODO: use this.Content to load your game content here
-            ballTexture = Content.Load<Texture2D>("EightBall.png");
-            Camera camera = new Camera(GraphicsDevice.Viewport);
-            ballView = new BallView(ballSimulation, camera, GraphicsDevice, ballTexture);
         }
 
         /// <summary>
@@ -75,7 +71,7 @@ namespace BallApplication
                 Exit();
 
             // TODO: Add your update logic here
-            ballSimulation.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            smokeSystem.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -86,10 +82,10 @@ namespace BallApplication
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            ballView.Draw(spriteBatch);
+            smokeSystem.Draw(spriteBatch, camera);
 
             base.Draw(gameTime);
         }

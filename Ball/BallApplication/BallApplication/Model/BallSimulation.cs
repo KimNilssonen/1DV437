@@ -25,9 +25,13 @@ namespace BallApplication.Model
             return ball.getRadius();
         }
 
+        public float getRotation()
+        {
+            return ball.getRotation();
+        }
+
         public void Update(float gameTime)
         {
-            // TODO: Add collision and other update stuff.
             ball.UpdatePosition(gameTime);
 
             if (getBallPosition().X + getBallRadius() >= 1 || getBallPosition().X - getBallRadius() <= 0)
