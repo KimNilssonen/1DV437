@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using FireAndExplosions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +10,25 @@ namespace Smoke
 {
     class SmokeSystem
     {
-        int maxParticles = 200;
-        float lifeTimeOfSmoke = 3.5f;
+        int maxParticles = 100;
+        float lifeTimeOfSmoke = 2.5f;
         private float time;
         List<SmokeParticle> smokeList = new List<SmokeParticle>();
         Random rand = new Random();
-        Texture2D _smoke;
+        Texture2D _smokeTexture;
+        Vector2 position;
 
-        public SmokeSystem(Texture2D smoke)
+        public SmokeSystem(Texture2D smokeTexture, Vector2 explosionPos)
         {
-            _smoke = smoke;
+            _smokeTexture = smokeTexture;
+            position = explosionPos;
         }
 
         public void addSmokeToList()
         {
             if (smokeList.Count < maxParticles)
             {
-                smokeList.Add(new SmokeParticle(rand, _smoke, lifeTimeOfSmoke));
+                smokeList.Add(new SmokeParticle(rand, _smokeTexture, lifeTimeOfSmoke, position));
             }
         }
 
@@ -41,21 +45,20 @@ namespace Smoke
             foreach(SmokeParticle smokeParticle in smokeList)
             {
                 smokeParticle.Update(gameTime);
-                if(smokeParticle.isLifeOver())
-                {
-                    smokeParticle.startParticle();
-                }
+                // Used to repeat the smoke. Don't want this for the explosion.
+                //if(smokeParticle.isLifeOver())
+                //{
+                //    smokeParticle.startParticle();
+                //}
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            spriteBatch.Begin();
-            foreach(SmokeParticle smokeParticle in smokeList)
+            foreach (SmokeParticle smokeParticle in smokeList)
             {
                 smokeParticle.Draw(spriteBatch, camera);
             }
-            spriteBatch.End();
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FireAndExplosions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace Smoke
         
         public Vector2 randomDirection;
         Vector2 velocity;
-        Vector2 acceleration = new Vector2(0.05f, -0.2f);
-        Vector2 startPosition = new Vector2(0.5f, 0.9f);
-        
+        Vector2 acceleration = new Vector2(0.0f, -0.2f);
+        Vector2 startPosition;
+
         Texture2D _smoke;
         Random _random;
         float _maxTimeToLive;
@@ -32,12 +33,13 @@ namespace Smoke
         public Vector2 position;
 
 
-        public SmokeParticle(Random rand, Texture2D smoke, float lifeTimeOfSmoke)
+        public SmokeParticle(Random rand, Texture2D smoke, float lifeTimeOfSmoke, Vector2 explosionPos)
         {
 
             _smoke = smoke;
             _random = rand;
             _maxTimeToLive = lifeTimeOfSmoke;
+            startPosition = explosionPos;
 
             randomRotation = 0.02f * ((float)_random.NextDouble() - (float)_random.NextDouble());
 
@@ -49,8 +51,8 @@ namespace Smoke
             size = minSize;
             fade = 1;
             timeLived = 0;
-            position = startPosition;
             rotation = 0;
+            position = startPosition;
 
             randomDirection = new Vector2((float)_random.NextDouble() - 0.5f, (float)_random.NextDouble() - 0.5f);
 
@@ -90,8 +92,9 @@ namespace Smoke
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             Color color = new Color(fade, fade, fade, fade);
-            spriteBatch.Draw(_smoke, camera.getVisualCoords(position, _smoke), null, 
-                                color, rotation, randomDirection, camera.getTextureScale(_smoke, size), SpriteEffects.None, 0);
+            float scale = camera.getTextureScale(_smoke.Width, size);
+            spriteBatch.Draw(_smoke, camera.getVisualCoords(position, _smoke.Width, _smoke.Height, scale), null,
+                                color, rotation, randomDirection, scale, SpriteEffects.None, 0.1f);
         }
     }
 }
