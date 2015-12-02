@@ -1,12 +1,11 @@
-﻿using FireAndExplosions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Splitter
+namespace Laboration3.View
 {
     class SplitterParticle
     {
@@ -19,8 +18,9 @@ namespace Splitter
         Texture2D _splitterTexture;
 
 
-        public SplitterParticle(Random rand, Texture2D splitterTexture, Vector2 explosionPos) 
+        public SplitterParticle(Random rand, Texture2D splitterTexture, Vector2 explosionPos)
         {
+            // explosionPos is the same as mousePos.
             _splitterTexture = splitterTexture;
             position = explosionPos;
 
@@ -41,7 +41,10 @@ namespace Splitter
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             float scale = camera.getTextureScale(_splitterTexture.Width, particleSize);
-            spriteBatch.Draw(_splitterTexture, camera.getVisualCoords(position, _splitterTexture.Width, _splitterTexture.Height, scale), null, Color.White, 0, randomDirection, scale, SpriteEffects.None, 0.5f);
+
+            spriteBatch.Draw(_splitterTexture, 
+                            camera.getVisualCoords(position, _splitterTexture.Width, _splitterTexture.Height, scale), 
+                            null, Color.White, 0, randomDirection, scale, SpriteEffects.None, 0.5f);
         }
     }
 }

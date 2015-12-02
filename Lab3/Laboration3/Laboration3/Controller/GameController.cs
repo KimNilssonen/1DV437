@@ -1,13 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Laboration3.View;
+using Laboration3.Model;
+using Microsoft.Xna.Framework.Audio;
 
-namespace FireAndExplosions
+namespace Laboration3.Controller
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class ApplicationController : Game
+    public class GameController : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -15,16 +18,29 @@ namespace FireAndExplosions
         Texture2D splitterTexture;
         Texture2D explosionTexture;
         Texture2D shockwaveTexture;
-        
-        Camera camera;
-        ApplicationView applicationView;
+        Texture2D ballTexture;
 
-        public ApplicationController()
+        SoundEffect fireSound;
+
+        Camera camera;
+        ExplosionView explosionView;
+        BallView ballView;
+
+        BallSimulation ballSimulation;
+
+        MouseState mouseState;
+        MouseState oldMouseState;
+
+
+        public GameController()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 600;
+            graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
+            graphics.IsFullScreen = false;
+            IsMouseVisible = true;
+            
         }
 
         /// <summary>
@@ -54,11 +70,15 @@ namespace FireAndExplosions
             splitterTexture = Content.Load<Texture2D>("spark.png");
             explosionTexture = Content.Load<Texture2D>("explosion.png");
             shockwaveTexture = Content.Load<Texture2D>("Shockwave.png");
-            
+            ballTexture = Content.Load<Texture2D>("EightBall.png");
+
+            fireSound = Content.Load<SoundEffect>("fire");
+
             camera = new Camera(graphics.GraphicsDevice.Viewport);
-            applicationView = new ApplicationView(smokeTexture, splitterTexture, explosionTexture, shockwaveTexture, camera, spriteBatch);
-
-
+            explosionView = new ExplosionView(smokeTexture, splitterTexture, explosionTexture,
+                                                shockwaveTexture, camera, spriteBatch, fireSound);
+            ballSimulation = new BallSimulation();
+            ballView = new BallView(ballSimulation, camera, graphics.GraphicsDevice, ballTexture);
 
         }
 
@@ -78,21 +98,22 @@ namespace FireAndExplosions
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-            {
-                applicationView.createExplosion();
-            }
+            mouseState = Mouse.GetState();
             
-            applicationView.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
 
-            // TODO: Add your update logic here
-            //if (Keyboard.GetState().IsKeyDown(Keys.E))
-            //{
-            //    applicationView.createExplosion();
-            //    applicationView.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-            //}
+            if (mouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released)
+            {
+                explosionView.createExplosion();
+            }
+
+            oldMouseState = mouseState;
+
+            ballSimulation.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            explosionView.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -103,10 +124,11 @@ namespace FireAndExplosions
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.SteelBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            applicationView.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
+            ballView.Draw(spriteBatch);
+            explosionView.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Draw(gameTime);
         }

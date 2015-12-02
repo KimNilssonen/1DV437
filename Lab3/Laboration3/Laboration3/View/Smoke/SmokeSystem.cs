@@ -1,12 +1,11 @@
-﻿using FireAndExplosions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Smoke
+namespace Laboration3.View
 {
     class SmokeSystem
     {
@@ -38,14 +37,14 @@ namespace Smoke
             // time += gameTime;
             // if (time >= (float)lifeTimeOfSmoke / maxParticles)
             //  {
-                addSmokeToList();
+            addSmokeToList();
             //      time = 0;
             //  }
-            
-            foreach(SmokeParticle smokeParticle in smokeList)
+
+            foreach (SmokeParticle smokeParticle in smokeList)
             {
                 smokeParticle.Update(gameTime);
-            
+
                 // Used to repeat the smoke. Don't want this for the explosion.
                 //if(smokeParticle.isLifeOver())
                 //{

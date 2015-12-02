@@ -10,7 +10,10 @@ namespace FireAndExplosions
     class Camera
     {
         float scaleX;
-        float scaleY;
+        float scaleY; 
+
+        // Used for resizing all textures.
+        float overallSize = 1.0f;
 
         public Camera(Viewport viewPort)
         {
@@ -41,7 +44,8 @@ namespace FireAndExplosions
 
         public float getTextureScale(float textureWidth, float size)
         {
-            return scaleX * size / textureWidth;
+            
+            return scaleX * (size*overallSize) / textureWidth;
         }
     }
 }
