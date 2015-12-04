@@ -27,6 +27,7 @@ namespace Laboration3.View
         Vector2 mousePosition;
         //Vector2 explosionPos = new Vector2(0.5f, 0.5f);
 
+        
 
         public ExplosionView(Texture2D smokeTexture, Texture2D splitterTexture, Texture2D explosionTexture, 
                                 Texture2D shockwaveTexture, Camera camera, SpriteBatch spriteBatch, 
@@ -39,12 +40,15 @@ namespace Laboration3.View
             _camera = camera;
             _spriteBatch = spriteBatch;
             _fireSound = fireSound;
+
+            createExplosion();
         }
 
 
 
         public void createExplosion()
         {
+            mouseState = Mouse.GetState();
             mousePosition = _camera.getLogicalCoords(new Vector2(mouseState.X, mouseState.Y));
 
             explosion = new Explosion(_explosionTexture, _camera, mousePosition);
@@ -55,7 +59,7 @@ namespace Laboration3.View
 
         public void Update(float elapsedTime)
         {
-            mouseState = Mouse.GetState();
+            
             if (explosion != null)
             {
                 smokeSystem.Update(elapsedTime);
@@ -69,9 +73,11 @@ namespace Laboration3.View
             {
                 // SpriteSortMode is used for layers in the draw. This makes it possible to put the particles behind the explosion, which looks better imo.
                 _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+
                 explosion.Draw(elapsedTime, _spriteBatch);
                 smokeSystem.Draw(_spriteBatch, _camera);
                 splitterSystem.Draw(_spriteBatch, _camera);
+
                 _spriteBatch.End();
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Laboration3.View
 {
@@ -36,7 +37,7 @@ namespace Laboration3.View
 
         public Vector2 getVisualCoords(Vector2 logicalCoords, float textureWidth, float textureHeight, float scale)
         {
-            
+
             float visualX = (logicalCoords.X * scaleX) - (textureWidth / 2) * scale;
             float visualY = (logicalCoords.Y * scaleY) - (textureHeight / 2) * scale;
 
@@ -54,9 +55,9 @@ namespace Laboration3.View
 
         public Vector2 getLogicalCoords(Vector2 visualCoords)
         {
-            float logicalX = (visualCoords.X / scaleX);
-            float logicalY = (visualCoords.Y / scaleY);
-            Console.WriteLine(logicalX + " " + logicalY);
+            float logicalX = (visualCoords.X - borderSize) / scaleX;
+            float logicalY = (visualCoords.Y - borderSize) / scaleY;
+            //Console.WriteLine(logicalX + " " + logicalY);
             return new Vector2(logicalX, logicalY);
         }
 
@@ -73,6 +74,11 @@ namespace Laboration3.View
         public Rectangle getGameArea()
         {
             return new Rectangle(borderSize, borderSize, (int)scaleX, (int)scaleY);
+        }
+
+        public Vector2 getViewport()
+        {
+            return new Vector2(scaleX, scaleY);
         }
     }
 }

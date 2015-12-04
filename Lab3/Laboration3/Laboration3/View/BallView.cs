@@ -27,10 +27,6 @@ namespace Laboration3.View
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            
-
-               
-
             spriteBatch.Begin();
 
             // Draw board.
@@ -44,10 +40,9 @@ namespace Laboration3.View
                 // Draw ball. Added rotation for fun =)
                 spriteBatch.Draw(_ballTexture, _camera.getBallVisualCoords(ball.getPosition(), _ballTexture.Width),
                                 _ballTexture.Bounds, Color.White, ball.getRotation(),
-                                new Vector2(_ballTexture.Width / 2, _ballTexture.Height / 2),
+                                new Vector2(_ballTexture.Width / 2, _ballTexture.Width / 2),
                                 ballScale, SpriteEffects.None, 0);
 
-                
             }
             spriteBatch.End();
         }

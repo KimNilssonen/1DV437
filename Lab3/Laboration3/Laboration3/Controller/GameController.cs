@@ -19,12 +19,15 @@ namespace Laboration3.Controller
         Texture2D explosionTexture;
         Texture2D shockwaveTexture;
         Texture2D ballTexture;
+        Texture2D circleAimTexture;
 
         SoundEffect fireSound;
 
         Camera camera;
-        ExplosionView explosionView;
+        StartView startView;
+        //ExplosionView explosionView;
         BallView ballView;
+        MouseCrosshairView mouseCrosshairView;
 
         BallSimulation ballSimulation;
 
@@ -39,7 +42,7 @@ namespace Laboration3.Controller
             graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             
         }
 
@@ -71,14 +74,19 @@ namespace Laboration3.Controller
             explosionTexture = Content.Load<Texture2D>("explosion.png");
             shockwaveTexture = Content.Load<Texture2D>("Shockwave.png");
             ballTexture = Content.Load<Texture2D>("EightBall.png");
+            circleAimTexture = Content.Load<Texture2D>("circleaim.png");
 
             fireSound = Content.Load<SoundEffect>("fire");
 
             camera = new Camera(graphics.GraphicsDevice.Viewport);
-            explosionView = new ExplosionView(smokeTexture, splitterTexture, explosionTexture,
-                                                shockwaveTexture, camera, spriteBatch, fireSound);
+            //explosionView = new ExplosionView(smokeTexture, splitterTexture, explosionTexture,
+            //                                    shockwaveTexture, camera, spriteBatch, fireSound);
+
             ballSimulation = new BallSimulation();
+            startView = new StartView(smokeTexture, splitterTexture, explosionTexture,
+                                                shockwaveTexture, camera, spriteBatch, fireSound, ballSimulation);
             ballView = new BallView(ballSimulation, camera, graphics.GraphicsDevice, ballTexture);
+            mouseCrosshairView = new MouseCrosshairView(/*camera, circleAimTexture*/);
 
         }
 
@@ -99,7 +107,12 @@ namespace Laboration3.Controller
         protected override void Update(GameTime gameTime)
         {
             mouseState = Mouse.GetState();
-            
+
+            ballSimulation.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            mouseCrosshairView.Update(mouseState);
+            startView.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
@@ -107,14 +120,13 @@ namespace Laboration3.Controller
 
             if (mouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released)
             {
-                explosionView.createExplosion();
+                startView.createExplosion(mouseState.X, mouseState.Y, (float)gameTime.ElapsedGameTime.TotalSeconds);
             }
 
             oldMouseState = mouseState;
 
-            ballSimulation.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-            explosionView.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-
+            
+         
             base.Update(gameTime);
         }
 
@@ -128,7 +140,8 @@ namespace Laboration3.Controller
 
             // TODO: Add your drawing code here
             ballView.Draw(spriteBatch);
-            explosionView.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
+            mouseCrosshairView.Draw(spriteBatch, circleAimTexture, camera);
+            startView.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Draw(gameTime);
         }

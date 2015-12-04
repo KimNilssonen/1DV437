@@ -93,7 +93,7 @@ namespace Laboration3.View
             Color color = new Color(fade, fade, fade, fade);
             float scale = camera.getTextureScale(_smokeTexture.Width, size);
             spriteBatch.Draw(_smokeTexture, camera.getVisualCoords(position, _smokeTexture.Width, _smokeTexture.Height, scale), null,
-                                color, rotation, randomDirection, scale, SpriteEffects.None, 0.1f);
+                                color, rotation, randomDirection, scale, SpriteEffects.None, 0.3f);
         }
     }
 }

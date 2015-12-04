@@ -15,7 +15,7 @@ namespace Laboration3.View
 
         // Changing numberOfFrames makes the explosion smoother(higher value) or less smooth(lower value).
         //   This also depends on the maxTime.
-        int numberOfFrames = 12;
+        int numberOfFrames = 24;
         int numFramesX = 4;
         int numFramesY = 8;
 
@@ -57,7 +57,7 @@ namespace Laboration3.View
             spriteBatch.Draw(_explosionTexture, _camera.getVisualCoords(_mousePosition, frameWidth, frameHeight, scale),
                                 new Rectangle(frameWidth * frameX, frameHeight * frameY, frameWidth, frameHeight), 
                                 Color.White, 0, Vector2.Zero, 
-                                scale, SpriteEffects.None, 1.0f);
+                                scale, SpriteEffects.None, 0.5f);
         }
     }
 }

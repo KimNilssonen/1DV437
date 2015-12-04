@@ -50,11 +50,12 @@
     <Compile Include="View\Camera.cs" />
     <Compile Include="View\ExplosionView.cs" />
     <Compile Include="View\Explosion\Explosion.cs" />
-    <Compile Include="View\MouseCrosshair.cs" />
+    <Compile Include="View\MouseCrosshairView.cs" />
     <Compile Include="View\Smoke\SmokeParticle.cs" />
     <Compile Include="View\Smoke\SmokeSystem.cs" />
     <Compile Include="View\Splitter\SplitterParticle.cs" />
     <Compile Include="View\Splitter\SplitterSystem.cs" />
+    <Compile Include="View\StartView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -64,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\circleaim.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\EightBall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
