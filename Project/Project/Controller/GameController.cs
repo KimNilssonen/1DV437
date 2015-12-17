@@ -7,6 +7,7 @@ using Project.View;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace Project.Controller
 {
@@ -17,17 +18,37 @@ namespace Project.Controller
 
         // View stuff.
         PlayerView playerView;
+        Level level;
         Camera camera;
 
         // Textures.
         Texture2D playerTexture;
 
-        public GameController(ContentManager Content, Viewport viewPort)
+        public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
-            // If new game, load this texture.
-            playerTexture = Content.Load<Texture2D>("PlayerSquare");
 
-            camera = new Camera(viewPort);
+            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            level = new Level();
+
+            Tiles.Content = Content;
+            
+            level.Generate(new int[,]
+            {
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
+                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,0,0,0},
+            }, 32);
+
+            
+
+            // If new game, load this player texture.
+            playerTexture = Content.Load<Texture2D>("PlayerSquare");
 
             playerSimulation = new PlayerSimulation();
             playerView = new PlayerView(camera, playerSimulation);
@@ -53,6 +74,7 @@ namespace Project.Controller
         public void Update(float gameTime)
         {
             KeyboardState currentKeyboardState = Keyboard.GetState();
+
             playerSimulation.UpdateMovement(currentKeyboardState);
             playerSimulation.Update(gameTime);
         }
@@ -60,6 +82,7 @@ namespace Project.Controller
         public void Draw(SpriteBatch spriteBatch)
         {
             playerView.Draw(spriteBatch, playerTexture);
+            level.Draw(spriteBatch);
         }
     }
 }

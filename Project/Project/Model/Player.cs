@@ -10,15 +10,28 @@ namespace Project.Model
     class Player
     {
         // TODO: Fix start position.
-        Vector2 position = new Vector2(0.5f, 0.9f);
+        Vector2 position = new Vector2(0.1f, 0.9f);
+        Vector2 acceleration = new Vector2(0.0f, 0.8f);
         Vector2 speed = Vector2.Zero;
         float maxSpeed = 0.5f;
         float deAccelerate = 0.03f;
         float accelerate = 0.02f;
+
         float size = 0.025f;
 
         public void UpdatePosition(float gameTime)
         {
+            if (position.Y >= 0.9f && acceleration.Y >= 0.8f)
+            {
+                acceleration.Y = 0;
+                speed.Y = 0;
+            }
+            else if(position.Y < 0.9f && acceleration.Y < 0.8f)
+            {
+                acceleration.Y = 1.0f;
+            }
+
+            speed = gameTime * acceleration + speed;
             position += speed * gameTime;
         }
 
@@ -71,6 +84,11 @@ namespace Project.Model
         public void jump()
         {
             // TODO: Implement jump function.
+            if (speed.Y == 0)
+            {
+                speed.Y = -0.3f;
+            }
+
         }
 
         public float getSize()

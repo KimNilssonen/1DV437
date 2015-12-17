@@ -16,7 +16,6 @@ namespace Project.Model
         {
             Still,
             Moving,
-            Jumping,
         }
         State currentState = State.Still;
 
@@ -32,6 +31,10 @@ namespace Project.Model
             currentState = State.Moving;
             if(currentState == State.Moving)
             {
+                if (currentKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    player.jump();
+                }
                 if (currentKeyboardState.IsKeyDown(Keys.Left))
                 {
                     player.setSpeedLeft();
@@ -40,7 +43,9 @@ namespace Project.Model
                 {
                     player.setSpeedRight();
                 }
-                if(currentKeyboardState.IsKeyUp(Keys.Left) && currentKeyboardState.IsKeyUp(Keys.Right))
+                if(currentKeyboardState.IsKeyUp(Keys.Left) &&
+                    currentKeyboardState.IsKeyUp(Keys.Right) &&
+                    currentKeyboardState.IsKeyUp(Keys.Up))
                 {
                     player.setSpeedZero();
                     currentState = State.Still;

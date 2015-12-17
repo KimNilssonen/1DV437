@@ -25,7 +25,7 @@ namespace Project.View
             playerTexture = newPlayerTexture;
 
             float playerScale = camera.getTextureScale(playerTexture.Width, playerSimulation.getSize());
-            spriteBatch.Draw(playerTexture, camera.getVisualCoords(playerSimulation.getPosition(), playerTexture.Width, playerTexture.Height, playerScale), 
+            spriteBatch.Draw(playerTexture, camera.getVisualCoords(playerSimulation.getPosition(), playerTexture.Width, playerTexture.Height),//, playerScale), 
                             null, Color.White, 0, Vector2.Zero, playerScale, SpriteEffects.None, 0);
         }
     }

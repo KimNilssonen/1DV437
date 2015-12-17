@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Controller\GameController.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="View\Level.cs" />
+    <Compile Include="View\Tiles.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerSimulation.cs" />
     <Compile Include="Program.cs" />
@@ -59,6 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Tile1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\MainMenuBg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -57,8 +57,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -72,7 +71,8 @@ namespace Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // GameControll stuff.
-            gameController = new GameController(Content, graphics.GraphicsDevice.Viewport);
+            gameController = new GameController(Content, graphics);
+
 
             // Player stuff.
 

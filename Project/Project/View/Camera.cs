@@ -13,8 +13,6 @@ namespace Project.View
         float scaleX;
         float scaleY;
 
-        int borderSize = 25;
-
         // Used for resizing all textures.
         float overallSize = 1.0f;
 
@@ -34,11 +32,11 @@ namespace Project.View
 
         }
 
-        public Vector2 getVisualCoords(Vector2 logicalCoords, float textureWidth, float textureHeight, float scale)
+        public Vector2 getVisualCoords(Vector2 logicalCoords, float textureWidth, float textureHeight)
         {
 
-            float visualX = (logicalCoords.X * scaleX) - textureWidth/2 * scale;
-            float visualY = (logicalCoords.Y * scaleY) - textureHeight/2 * scale;
+            float visualX = (logicalCoords.X * scaleX) - textureWidth / 2;
+            float visualY = (logicalCoords.Y * scaleY) - textureHeight / 2;
 
             return new Vector2(visualX, visualY);
         }
@@ -47,7 +45,7 @@ namespace Project.View
         public Vector2 getLogicalCoords(Vector2 visualCoords)
         {
             float logicalX = (visualCoords.X) / scaleX;
-            float logicalY = (visualCoords.Y - borderSize) / scaleY;
+            float logicalY = (visualCoords.Y) / scaleY;
             //Console.WriteLine(logicalX + " " + logicalY);
             return new Vector2(logicalX, logicalY);
         }
@@ -57,14 +55,14 @@ namespace Project.View
             return scaleX * (size * overallSize) / textureWidth;
         }
 
-        public Rectangle getGameArea()
-        {
-            return new Rectangle(borderSize, borderSize, (int)scaleX, (int)scaleY);
-        }
+        //public Rectangle getGameArea()
+        //{
+        //    return new Rectangle(0, 0, (int)scaleX, (int)scaleY);
+        //}
 
-        public Vector2 getViewport()
-        {
-            return new Vector2(scaleX, scaleY);
-        }
+        //public Vector2 getViewport()
+        //{
+        //    return new Vector2(scaleX, scaleY);
+        //}
     }
 }
