@@ -10,27 +10,52 @@ namespace Project.Model
     class Player
     {
         // TODO: Fix start position.
-        Vector2 position = new Vector2(0.1f, 0.9f);
-        Vector2 acceleration = new Vector2(0.0f, 0.8f);
-        Vector2 speed = Vector2.Zero;
-        float maxSpeed = 0.5f;
+        Vector2 position = new Vector2(0.1f, 0.8f);
+
+        public Vector2 acceleration = new Vector2(0.0f, 0.8f);
+
+        public Vector2 speed = Vector2.Zero;
+       
+        private Rectangle rectangle;
+        public Rectangle Rectangle
+        {
+            get { return rectangle; }
+            set { rectangle = value; }
+        }
+
+        // X movement stuff.
+        float maxSpeed = 0.25f;
         float deAccelerate = 0.03f;
-        float accelerate = 0.02f;
+        float accelerate = 0.01f;
 
         float size = 0.025f;
+        
+        private bool hasJumped;
+        public bool HasJumped
+        {
+            get { return hasJumped; }
+            set { hasJumped = value; }
+        }
+
+        private bool touchingFloor;
+        public bool TouchingFloor
+        {
+            get { return touchingFloor; }
+            set { touchingFloor = value; }
+        }
 
         public void UpdatePosition(float gameTime)
         {
-            if (position.Y >= 0.9f && acceleration.Y >= 0.8f)
+            if(hasJumped || !touchingFloor)
             {
-                acceleration.Y = 0;
+                Fall();
+            }
+            else
+            {
                 speed.Y = 0;
+                acceleration.Y = 0;
             }
-            else if(position.Y < 0.9f && acceleration.Y < 0.8f)
-            {
-                acceleration.Y = 1.0f;
-            }
-
+            
             speed = gameTime * acceleration + speed;
             position += speed * gameTime;
         }
@@ -81,14 +106,19 @@ namespace Project.Model
             }
         }
 
-        public void jump()
+        public void Jump()
         {
-            // TODO: Implement jump function.
-            if (speed.Y == 0)
-            {
-                speed.Y = -0.3f;
-            }
 
+            if (!hasJumped)
+            {
+                speed.Y = -0.6f;
+                hasJumped = true;
+            }
+        }
+
+        public void Fall()
+        {
+            acceleration.Y = 1.5f;
         }
 
         public float getSize()

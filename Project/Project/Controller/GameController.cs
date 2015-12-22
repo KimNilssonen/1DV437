@@ -16,6 +16,9 @@ namespace Project.Controller
         // Model stuff.
         PlayerSimulation playerSimulation;
 
+        // Input stuff.
+        KeyboardState currentKeyboardState;
+
         // View stuff.
         PlayerView playerView;
         Level level;
@@ -34,16 +37,17 @@ namespace Project.Controller
             
             level.Generate(new int[,]
             {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
-                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,0,0,0},
-            }, 32);
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0},
+            }, 64);
 
             
 
@@ -73,16 +77,33 @@ namespace Project.Controller
 
         public void Update(float gameTime)
         {
-            KeyboardState currentKeyboardState = Keyboard.GetState();
+            currentKeyboardState = Keyboard.GetState();
 
             playerSimulation.UpdateMovement(currentKeyboardState);
             playerSimulation.Update(gameTime);
+
+            
+            foreach (CollisionTiles tile in level.CollisionTiles)
+            {
+                // Using camera in playerSimulation to be able to use rectangles.
+                playerSimulation.Collision(tile.Rectangle, level.Width, level.Height, camera);
+                camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), level.Width, level.Height);
+                
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            playerView.Draw(spriteBatch, playerTexture);
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                              BlendState.AlphaBlend,
+                              null, null, null, null,
+                              camera.Transform);
+
             level.Draw(spriteBatch);
+            playerView.Draw(spriteBatch, playerTexture);
+
+            spriteBatch.End();
         }
     }
 }

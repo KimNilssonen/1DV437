@@ -42,7 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controller\GameController.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="MasterController.cs" />
+    <Compile Include="Model\RectangleHelper.cs" />
     <Compile Include="View\Level.cs" />
     <Compile Include="View\Tiles.cs" />
     <Compile Include="Model\Player.cs" />

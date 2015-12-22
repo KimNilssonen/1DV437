@@ -32,15 +32,15 @@ namespace Project
         GameState CurrentGameState = GameState.Playing;
         
         //GameState CurrentGameState = GameState.MainMenu;
-        int screenWidth = 800, screenHeight = 600;
+        int screenWidth = 1024, screenHeight = 600;
 
         public Project()
         {
             graphics = new GraphicsDeviceManager(this);
             
             // Screen setup.
-            graphics.PreferredBackBufferWidth = screenWidth;
-            graphics.PreferredBackBufferHeight = screenHeight;
+            graphics.PreferredBackBufferWidth = screenWidth; //21*32;
+            graphics.PreferredBackBufferHeight = screenHeight; //10 * 32;
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             
@@ -69,11 +69,12 @@ namespace Project
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             // GameControll stuff.
             gameController = new GameController(Content, graphics);
 
-
+            
             // Player stuff.
 
 
@@ -144,11 +145,11 @@ namespace Project
                     break;
 
                 case GameState.Playing:
-                    spriteBatch.Begin();
+                    
 
                     gameController.Draw(spriteBatch);
 
-                    spriteBatch.End();
+                    
                     break;
             }
 
