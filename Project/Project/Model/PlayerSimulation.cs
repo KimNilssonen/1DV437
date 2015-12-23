@@ -13,13 +13,6 @@ namespace Project.Model
 
         Player player = new Player();
 
-        //enum State
-        //{
-        //    Still,
-        //    Moving,
-        //}
-        //State currentState = State.Still;
-
         public void Update(float gameTime)
         {
             player.UpdatePosition(gameTime);
@@ -49,57 +42,45 @@ namespace Project.Model
             
         }
 
-        // TODO: Fix collision error!!!!!!
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset, Camera camera)
         {
             Vector2 position = camera.getVisualCoords(player.getPosition());
             Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
 
-            //Console.WriteLine("\n\nRectangle: " + rectangle + "\n New rectangle: " + newRectangle + "\n  Position: " + position);
             if (rectangle.TouchTop(newRectangle))
             {
-                rectangle.Y = newRectangle.Y - rectangle.Height;
-
-                player.HasJumped = false;
+                position.Y = newRectangle.Y - rectangle.Height;
                 player.TouchingFloor = true;
-
-                Console.WriteLine(rectangle.Size);
-                Console.WriteLine("HEJ Top");
-
-                if((rectangle.X + rectangle.Width/2) > (newRectangle.X + newRectangle.Width))
-                {
-                    player.TouchingFloor = false;
-                }
+                player.HasJumped = false;
             }
 
-            else if (rectangle.TouchLeft(newRectangle))
+            if (rectangle.TouchLeft(newRectangle))
             {
-                Console.WriteLine("HEJ Left");
-                position.X = newRectangle.X - rectangle.Width - 4;
-                player.speed.X = -0.1f;
+                position.X = newRectangle.X - rectangle.Width;
+                player.speed.X = -0.05f;
                 
             }
-            else if (rectangle.TouchRight(newRectangle))
+            if (rectangle.TouchRight(newRectangle))
             {
-                position.X = newRectangle.X + newRectangle.Width + 4;
-                player.speed.X = 0.1f;
+                position.X = newRectangle.X + newRectangle.Width;
+                player.speed.X = 0.05f;
             }
 
-            else if (rectangle.TouchBottom(newRectangle))
+            if (rectangle.TouchBottom(newRectangle))
             {
-                player.speed.Y = 1;
+                player.speed.Y = 0.5f;
             }
 
             if (position.X < 0)
             {
                 position.X = 0;
-                player.speed.X = 0.1f;
+                player.speed.X = 0.05f;
             }
 
             if (position.X > xOffset - rectangle.Width)
             {
                 position.X = xOffset - rectangle.Width;
-                player.speed.X = -0.1f;
+                player.speed.X = -0.05f;
             }
 
             if (position.Y < 0)
@@ -109,7 +90,15 @@ namespace Project.Model
 
             if (position.Y > yOffset - rectangle.Height)
             {
+                
                 position.Y = yOffset - rectangle.Height;
+            }
+
+            // If player leaves top of a rectangle.
+            if(position.X > newRectangle.X + newRectangle.Width)
+            {
+                player.TouchingFloor = false;
+                player.HasJumped = true; // Maybe should be called, CanJump...
             }
         }
 

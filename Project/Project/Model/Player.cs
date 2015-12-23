@@ -10,9 +10,9 @@ namespace Project.Model
     class Player
     {
         // TODO: Fix start position.
-        Vector2 position = new Vector2(0.1f, 0.8f);
+        Vector2 position = new Vector2(0.1f, 0.5f);
 
-        public Vector2 acceleration = new Vector2(0.0f, 0.8f);
+        public Vector2 acceleration;
 
         public Vector2 speed = Vector2.Zero;
        
@@ -28,6 +28,7 @@ namespace Project.Model
         float deAccelerate = 0.03f;
         float accelerate = 0.01f;
 
+        float standardGravity = 1.5f;
         float size = 0.025f;
         
         private bool hasJumped;
@@ -46,16 +47,17 @@ namespace Project.Model
 
         public void UpdatePosition(float gameTime)
         {
-            if(hasJumped || !touchingFloor)
+
+            if(TouchingFloor && !HasJumped)
             {
-                Fall();
+                StandOnGround();
             }
             else
             {
-                speed.Y = 0;
-                acceleration.Y = 0;
+                Fall();
             }
             
+                
             speed = gameTime * acceleration + speed;
             position += speed * gameTime;
         }
@@ -108,17 +110,22 @@ namespace Project.Model
 
         public void Jump()
         {
-
             if (!hasJumped)
             {
                 speed.Y = -0.6f;
-                hasJumped = true;
+                HasJumped = true;
             }
         }
 
         public void Fall()
         {
-            acceleration.Y = 1.5f;
+            acceleration.Y = standardGravity;
+        }
+
+        public void StandOnGround()
+        {
+            acceleration.Y = 0;
+            speed.Y = 0;
         }
 
         public float getSize()

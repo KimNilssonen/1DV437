@@ -72,7 +72,7 @@ namespace Project.View
             if (position.Y < viewPort.Height)
             {
                 // +40 so the platform rise a bit from the bottom.
-                center.Y = (viewPort.Height / 2) + 40;
+                center.Y = (viewPort.Height / 4);
             }
             else if (position.Y > yOffset - (viewPort.Height / 2))
             {
