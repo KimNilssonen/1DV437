@@ -24,18 +24,32 @@ namespace Project.Model
         }
 
         // X movement stuff.
-        float maxSpeed = 0.25f;
+        float maxSpeed = 0.175f;
         float deAccelerate = 0.03f;
         float accelerate = 0.01f;
 
         float standardGravity = 1.5f;
         float size = 0.025f;
-        
-        private bool hasJumped;
-        public bool HasJumped
+
+        private bool isAlive;
+        public bool IsAlive
         {
-            get { return hasJumped; }
-            set { hasJumped = value; }
+            get { return isAlive; }
+            set { isAlive = value; }
+        }
+
+        private bool canJumpAgain;
+        public bool CanJumpAgain
+        {
+            get { return canJumpAgain; }
+            set { canJumpAgain = value; }
+        }
+
+        private bool canJump;
+        public bool CanJump
+        {
+            get { return canJump; }
+            set { canJump = value; }
         }
 
         private bool touchingFloor;
@@ -45,14 +59,21 @@ namespace Project.Model
             set { touchingFloor = value; }
         }
 
+        private bool isFalling;
+        public bool IsFalling
+        {
+            get { return isFalling; }
+            set { isFalling = value; }
+        }
+
         public void UpdatePosition(float gameTime)
         {
 
-            if(TouchingFloor && !HasJumped)
+            if(TouchingFloor && IsFalling)
             {
                 StandOnGround();
             }
-            else
+            else if(!TouchingFloor && !IsFalling)
             {
                 Fall();
             }
@@ -108,24 +129,34 @@ namespace Project.Model
             }
         }
 
-        public void Jump()
+        public void Jump(Enum currentPlayerForm)
         {
-            if (!hasJumped)
+            if(CanJump && CanJumpAgain)
             {
                 speed.Y = -0.6f;
-                HasJumped = true;
+                CanJump = false;
+            }
+            else if(!CanJump && CanJumpAgain)
+            {
+                if (currentPlayerForm.ToString() == "Triangle")
+                {
+                    speed.Y = -0.6f;
+                    CanJumpAgain = false;
+                }
             }
         }
 
         public void Fall()
         {
             acceleration.Y = standardGravity;
+            IsFalling = true;
         }
 
         public void StandOnGround()
         {
             acceleration.Y = 0;
             speed.Y = 0;
+            IsFalling = false;
         }
 
         public float getSize()

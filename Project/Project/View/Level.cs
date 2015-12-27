@@ -36,6 +36,9 @@ namespace Project.View
                 for (int y = 0; y < map.GetLength(0); y++)
                 {
                     int textureIndex = map[y, x];
+                    
+                    
+                    
                     if (textureIndex > 0)
                     {
                         collisionTiles.Add(new CollisionTiles(textureIndex, new Rectangle(x*size, y*size, size, size)));
@@ -52,6 +55,7 @@ namespace Project.View
         {
             foreach(CollisionTiles tile in collisionTiles)
             {
+                
                 tile.Draw(spriteBatch);
             }
         }

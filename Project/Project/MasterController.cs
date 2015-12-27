@@ -74,10 +74,6 @@ namespace Project
             // GameControll stuff.
             gameController = new GameController(Content, graphics);
 
-            
-            // Player stuff.
-
-
             // Menu stuff.
             mainMenuBg = Content.Load<Texture2D>("MainMenuBg");
             playButtonTexture = Content.Load<Texture2D>("PlayButton");

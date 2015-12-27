@@ -8,6 +8,8 @@ namespace Project.Model
 {
     static class RectangleHelper
     {
+        // These bools basically say, if r1 touch the top of r2. If r1 touch the bottom of r2 etc.
+        // r1 will be tha players rectangle and r2 would be the leveltiles rectangles.
         public static bool TouchTop(this Rectangle r1, Rectangle r2)
         {
             return (r1.Bottom > r2.Top - 2 &&

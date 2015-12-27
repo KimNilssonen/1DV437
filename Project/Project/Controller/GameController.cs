@@ -27,26 +27,37 @@ namespace Project.Controller
         // Textures.
         Texture2D playerTexture;
 
+        ContentManager content;
+
+        public enum PlayerForm
+        {
+            Square,
+            Triangle
+        }
+        PlayerForm currentPlayerForm;
+
         public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
 
             camera = new Camera(graphics.GraphicsDevice.Viewport);
             level = new Level();
+            content = Content;
+            currentPlayerForm = PlayerForm.Square;
 
             Tiles.Content = Content;
             
             level.Generate(new int[,]
             {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0},
+                {0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,9},
+                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,1,1},
             }, 48);
 
             
@@ -61,27 +72,38 @@ namespace Project.Controller
 
         public void Play()
         {
-
+            // Might need to load levels etc.
             
         }
 
-        public void changePlayerTexture()
+        public void changePlayerTexture(KeyboardState currentKeyboardState)
         {
             // If player press 1, 2, etc. load new texture here...
             // if(input == 2) playerTexture = Content.Load<Texture2D>("PlayerTriangle");
             // if(input == 3) playerTexture = Content.Load<Texture2D>("PlayerCircle");
             // etc...
 
-            // playerView = new PlayerView(playerTexture);
+
+            if(currentKeyboardState.IsKeyDown(Keys.D1))
+            {
+                playerTexture = content.Load<Texture2D>("PlayerSquare");
+                currentPlayerForm = PlayerForm.Square;
+            }
+            else if (currentKeyboardState.IsKeyDown(Keys.D2))
+            {
+                playerTexture = content.Load<Texture2D>("PlayerTriangle");
+                currentPlayerForm = PlayerForm.Triangle;
+            }
         }
 
         public void Update(float gameTime)
         {
+
             currentKeyboardState = Keyboard.GetState();
 
-            playerSimulation.UpdateMovement(currentKeyboardState);
-            playerSimulation.Update(gameTime);
+            changePlayerTexture(currentKeyboardState);
 
+            playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
             
             foreach (CollisionTiles tile in level.CollisionTiles)
             {
