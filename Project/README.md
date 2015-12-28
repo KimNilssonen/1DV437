@@ -2,11 +2,11 @@
 
 ###Krav
 
-* Studenten skall genomföra två publika releaser av spelet i form GitHub-releaser med installationsinstruktioner. Dessa releaser skall vara tillgänglig enligt genomförande.  
-* All egen kod skall finnas tillgängligt i en .zip fil eller öppet repositorie, denna kod skall finnas tillgänglig för handledare via mail senast måndagen under releaseveckan.  
+* Studenten skall genomföra två publika releaser av spelet i form GitHub-releaser med installationsinstruktioner. Dessa releaser skall       vara tillgänglig enligt genomförande.  
+* All egen kod skall finnas tillgängligt i en .zip fil eller öppet repositorie, denna kod skall finnas tillgänglig för handledare via        mail senast måndagen under releaseveckan.  
 * Studenten presenterar sitt spel med hjälp utav en youtube-film.  
 * Spelet skall ha minst tre banor med ökande svårighetsgrad och nya spelelement på varje bana.  
-* Spelet skall ha en meny.  
+* Spelet skall ha en meny.   
 * Spelet skall ha mellanskärmar efter avslutad bana eller när spelet är game over.  
 * Spelet skall kunna återstartas efter game over.  
 * Spelet skall kunna pausas genom att gå till menyn, spelet skall sedan kunna återstartas.  
