@@ -1,6 +1,7 @@
 # 1DV437
 
-###Krav
+Below is requirements for my own purpose. If you want to read more about the project, check out the wiki on this repo.  
+####Krav
 
 * Studenten skall genomföra två publika releaser av spelet i form GitHub-releaser med installationsinstruktioner. Dessa releaser skall       vara tillgänglig enligt genomförande.  
 * All egen kod skall finnas tillgängligt i en .zip fil eller öppet repositorie, denna kod skall finnas tillgänglig för handledare via        mail senast måndagen under releaseveckan.  
