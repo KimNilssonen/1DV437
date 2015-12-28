@@ -74,7 +74,7 @@ namespace Project.Model
 
             if (position.X < 0)
             {
-                position.X = 0;
+                position.X = 0 + rectangle.Width;
                 player.speed.X = 0.05f;
             }
 
