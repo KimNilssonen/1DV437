@@ -1,4 +1,4 @@
-# 1DV437
+# 1DV437 - Project
 
 Below is requirements for my own purpose. If you want to read more about the project, check out the wiki on this repo.  
 ####Krav
